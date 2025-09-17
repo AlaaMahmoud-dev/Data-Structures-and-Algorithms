@@ -360,6 +360,7 @@ int main()
 	Wiedth = 0;
 	ReadTriangle(Length, Wiedth);
 	PrintAreaOfTriangle(CalculateAreaOfTriangle(Length, Wiedth));
-	///ملاحظة انه المهندس حل مشكلة 9 و 10 بطريقة مش افضل اشي(الطريقة تبعتي المفروض انها افضل) مشان نراجع الكول باي ريفيرنس
+	
 }
+
 
