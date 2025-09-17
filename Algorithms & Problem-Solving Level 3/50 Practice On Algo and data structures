@@ -1,0 +1,1758 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <string>
+#include <cctype>
+#include <vector>
+#include <fstream>
+
+
+#include "Read.h";
+#include "Random.h";
+
+using namespace std;
+using namespace Read;
+using namespace Random;
+
+const string FileName = "ClientFile.txt";
+
+enum enWhatToCount { CapitalLetters = 1, SmallLetters = 2, All = 3 };
+
+struct stClientData {
+
+	string AccountNumber = "";
+	string PINCode = "";
+	string Name = "";
+	string Phone = "";
+	string AccountBalance = "";
+	bool Delete = false;
+	bool MarkToUpdate = false;
+};
+
+string ReadString() {
+	string str = "";
+	cout << "\nPlease enter Account Number\n";
+	cin.ignore(1, '\n');
+	getline(cin, str);
+	return str;
+}
+
+char Readchar() {
+
+	char ch = ' ';
+	cout << "\nPlease enter your character??\n";
+	cin >> ch;
+	return ch;
+
+}
+
+void FillRandomMatrix(int Matrix[3][3],short Rows,short Coloms) {
+
+	for (int i = 0; i < Rows; i++)
+	{
+		for (int j = 0; j < Coloms; j++)
+		{
+			Matrix[i][j] = RandomNumber(1, 10);
+		}
+	}
+
+
+}
+
+void PrintMatrix(int Matrix[3][3], short Rows, short Coloms) {
+
+	for (int i = 0; i < Rows; i++)
+	{
+		for (int j = 0; j < Coloms; j++)
+		{
+			printf("%0*d   ", 2, Matrix[i][j]);
+
+			//cout <<setw(3)<< Matrix[i][j] << "  ";
+		}
+		cout << endl;
+	}
+
+}
+
+int RowSum(int Matrix[3][3],short RowNumber,short Coloms) {
+
+	int sum = 0;
+	for (int j = 0; j < Coloms; j++)
+	{
+		sum += Matrix[RowNumber][j];
+	}
+	return sum;
+
+
+
+}
+
+void PrintRowSum(int Matrix[3][3],short Rows,short Coloms) {
+
+
+	for (int i = 0; i < Rows; i++)
+	{
+		cout << "Row " << i + 1 << " Sum : " << RowSum(Matrix, i, Coloms) << endl;
+	}
+
+
+
+}
+
+void RowSumUsingArr(int Matrix[3][3],int SumArr[3], short Rows, short Coloms) {
+
+
+	for (int i = 0; i < Rows; i++)
+	{
+		SumArr[i] = RowSum(Matrix, i, Coloms);
+		
+	}
+
+
+}
+
+void PrintEachRowSumUsingArr(int SumEachRow[3],short Rows) {
+
+	for (int i = 0; i < Rows; i++) 
+	{
+		cout << "Sum of Row" << i+1 << "=" << SumEachRow[i] << endl;
+	}
+}
+
+int ColomSum(int Matrix[3][3], short ColomNumber, short Rows) {
+
+	int sum = 0;
+	for (int i = 0; i < Rows; i++)
+	{
+		sum += Matrix[i][ColomNumber];
+	}
+	return sum;
+
+
+
+}
+
+void PrintEachColomSum(int Matrix[3][3], short Rows, short Coloms) {
+
+
+	for (int j = 0; j < Coloms; j++)
+	{
+		cout << "Colom " << j + 1 << " Sum : " << ColomSum(Matrix, j, Rows) << endl;
+	}
+
+
+
+}
+
+void ColSumUsingArr(int Matrix[3][3],int arr[3],short Rows ,short Coloms) {
+
+	for (int j = 0; j < Coloms; j++)
+	{
+		arr[j] = ColomSum(Matrix, j, Rows);
+	}
+
+
+
+}
+
+void PrintEachColSumUsingArr(int arr[3],short Coloms) {
+
+	for (int j = 0; j < Coloms; j++)
+	{
+		cout << "Col " << j + 1 << " Sum : " << arr[j] << endl;
+	}
+
+
+
+}
+
+void FillMatrixWithOrderdNums(int Matrix[3][3],short Rows,short Coloms) {
+
+	short OrderdElements = 1;
+	for (short i = 0; i < Rows; i++)
+	{
+		for (int j = 0; j < Coloms; j++)
+		{
+			Matrix[i][j] = OrderdElements;
+			OrderdElements++;
+		}
+	}
+
+
+}
+
+void TransposMatrix(int Matrix[3][3],int MatrixTranspos[3][3], short Rows, short Coloms) {
+
+	for (short j = 0; j < Coloms; j++)
+	{
+		for (short i = 0; i < Rows; i++)
+		{
+			MatrixTranspos[i][j]=Matrix[j][i];
+			
+		}
+		
+	}
+
+
+
+}
+
+void MultiplyTwoMatrices(int Matrix1[3][3], int Matrix2[3][3], int ResultMatrix[3][3],short Rows,short Coloms) {
+
+
+	for (short i = 0; i < Rows; i++)
+	{
+		for (short j = 0; j < Coloms; j++)
+		{
+			ResultMatrix[i][j] = Matrix1[i][j] * Matrix2[i][j];
+		}
+	}
+
+
+}
+
+void PrintMiddleRow(int Matrix[3][3], short Rows, short Coloms) {
+
+	short MiddleRow = Rows / 2;
+
+	for (int j = 0; j < Coloms; j++)
+	{
+		printf("%0*d   ", 2, Matrix[MiddleRow][j]);
+	}
+	cout << endl;
+
+}
+
+void PrintMiddleColom(int Matrix[3][3], short Rows, short Coloms) {
+
+	short MiddleColom = Coloms / 2;
+
+	for (int i = 0; i < Rows; i++)
+	{
+		printf("%0*d   ",2,Matrix[i][MiddleColom]);
+	}
+	cout << endl;
+
+}
+
+int SumMatrix(int Matrix[3][3], short Rows, short Coloms) {
+
+	int Sum = 0;
+	for (int i = 0; i < Rows; i++)
+	{
+		for (int j = 0; j < Coloms; j++)
+		{
+
+			Sum += Matrix[i][j];
+		}
+
+	}
+	return Sum;
+
+}
+
+bool AreEqualMatrices(int Matrix1[3][3], int Matrix2[3][3], short Rows, short Coloms) {
+
+	return(SumMatrix(Matrix1, Rows, Coloms) == SumMatrix(Matrix2, Rows, Coloms));
+
+
+
+
+}
+
+bool AreTypicalMatrices(int Matrix1[3][3], int Matrix2[3][3], short Rows, short Coloms) {
+
+	for (int i = 0; i < Rows; i++)
+	{
+		for (int j = 0; j < Coloms; j++)
+		{
+			if (Matrix1[i][j] != Matrix2[i][j])
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+
+}
+
+bool isIdentityMatrix(int Matrix[3][3],short Rows,short Coloms) {
+
+	//check Diagonal elements are 1 and rest elements are 0
+	for (int i = 0; i < Rows; i++)
+	{
+		for (int j = 0; j < Coloms; j++)
+		{
+			//check for diagonals element
+			if (i == j&& Matrix[i][j] != 1)
+			{
+				return false;
+			}
+			//check for rest elements
+			else if(i != j && Matrix[i][j] != 0)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+
+
+
+}
+
+bool isScalarMatrix(int Matrix[3][3], short Rows, short Coloms) {
+
+	int FirstDiagonalElement = Matrix[0][0];
+	
+	
+
+	//check Diagonal elements are Equals and rest elements are 0
+	for (int i = 0; i < Rows; i++)
+	{
+		for (int j = 0; j < Coloms; j++)
+		{
+			//check for diagonals element
+			if (i == j && Matrix[i][j] != FirstDiagonalElement)
+			{
+				return false;
+			}
+			//check for rest elements
+			else if (i != j && Matrix[i][j] != 0)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+
+
+
+}
+
+short NumberFreqInMatrix(int Matrix[3][3],int Number, short Rows, short Coloms) {
+
+	short TimeFreq = 0;
+	for (short i = 0; i < Rows; i++)
+	{
+		for (short j = 0; j < Coloms; j++)
+		{
+			if (Matrix[i][j] == Number)
+			{
+				TimeFreq++;
+			}
+		}
+	}
+	return TimeFreq;
+}
+
+void PrintNumberFreqInMatrix(int Number,short TimeFreq) {
+
+	cout << "\nNumber " << Number << " Count in Matrix is: " << TimeFreq << endl;
+
+}
+
+bool isSparceMatrix(int Matrix[3][3], short Rows,short Coloms) {
+
+
+	short MatrixSize = (Rows * Coloms);
+
+	return (NumberFreqInMatrix(Matrix, 0, Rows, Coloms) >= MatrixSize / 2 + 1);
+	
+
+
+}
+
+bool isNumExistsInMatrix(int Matrix[3][3], short Rows, short Coloms,int Number) {
+
+
+	for (short i = 0; i < Rows; i++)
+	{
+		for (short j = 0; j < Coloms; j++)
+		{
+			if (Matrix[i][j] == Number)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+
+
+}
+
+void PrintIntersectedNumbersInTwoMatrices(int Matrix1[3][3], int Matrix2[3][3], short Rows, short Coloms) {
+
+
+	for (short i = 0; i < Rows; i++)
+	{
+		for (short j = 0; j < Coloms; j++)
+		{
+			if (isNumExistsInMatrix(Matrix2,Rows,Coloms, Matrix1[i][j]))
+			{
+				cout << Matrix1[i][j] << "   ";
+			}
+		}
+	}
+
+
+
+
+}
+
+int MaxNumberInMatrix(int Matrix[3][3], short Rows, short Coloms) {
+
+	int Max = Matrix[0][0];
+	for (short i = 0; i < Rows; i++)
+	{
+		for (short j = 0; j < Coloms; j++)
+		{
+			if (Matrix[i][j] > Max)
+			{
+				Max = Matrix[i][j];
+			}
+		}
+	}
+	return Max;
+}
+
+int MinNumberInMatrix(int Matrix[3][3], short Rows, short Coloms) {
+
+	int Min = Matrix[0][0];
+	for (short i = 0; i < Rows; i++)
+	{
+		for (short j = 0; j < Coloms; j++)
+		{
+			if (Matrix[i][j] < Min)
+			{
+				Min = Matrix[i][j];
+			}
+		}
+	}
+	return Min;
+}
+
+bool isPalindromMatrix(int Matrix[3][3], short Rows, short Coloms) {
+
+	for (short i = 0; i < Rows; i++)
+	{
+		for (short j = 0; j < Coloms / 2; j++)
+		{
+			if (Matrix[i][j] != Matrix[i][Coloms - j - 1])
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+
+}
+
+void PrintFibonaccySeries(int FibbonaccyLong) {
+
+	int Previos1 = 1, Previos2 = 0, Sum = 0;
+	cout << "1   ";
+	for (int i = 2; i <= FibbonaccyLong; i++)
+	{
+		Sum = Previos1 + Previos2;
+		cout << Sum<<"    ";
+		Previos2 = Previos1;
+		Previos1 = Sum;
+	}
+	cout << "\n";
+
+}
+
+void PrintFibonaccySeriesUsingRecursion(int FibbonaccyLong,int Previos1, int Previos2,int sum) {
+
+
+	if (FibbonaccyLong >= 1)
+	{
+		cout << Previos1<<"   ";
+
+		sum = Previos1 + Previos2;
+		Previos2 = Previos1;
+		Previos1 = sum;
+		PrintFibonaccySeriesUsingRecursion(--FibbonaccyLong, Previos1, Previos2, sum);
+
+	}
+
+
+}
+
+void PrintFirstLetterOfEachWordInString(string str) {
+
+	bool isFirstLetter = true;
+
+
+
+	for (int i = 0; i < str.length(); i++)
+	{
+
+		
+		if (str.at(i) != ' '&& isFirstLetter)
+		{
+			cout << str.at(i) << endl;
+		}
+		isFirstLetter = (str.at(i) == ' ' ? true : false);
+	}
+
+
+}
+
+void UpperCaseFirstLetterOfEachWordInString(string &str) {
+
+	bool isFirstLetter = true;
+
+
+
+	for (int i = 0; i < str.length(); i++)
+	{
+
+
+		if (str.at(i) != ' ' && isFirstLetter)
+		{
+			str.at(i)=toupper(str.at(i));
+		}
+		isFirstLetter = (str.at(i) == ' ' ? true : false);
+	}
+
+
+}
+
+void LowerCaseFirstLetterOfEachWordInString(string& str) {
+
+	bool isFirstLetter = true;
+
+
+
+	for (int i = 0; i < str.length(); i++)
+	{
+
+
+		if (str.at(i) != ' ' && isFirstLetter)
+		{
+			str.at(i) = tolower(str.at(i));
+		}
+		isFirstLetter = (str.at(i) == ' ' ? true : false);
+	}
+
+
+}
+
+void UpperCaseAllLetterInString(string& str) {
+
+	bool isFirstLetter = true;
+
+
+
+	for (int i = 0; i < str.length(); i++)
+	{
+
+
+		if (str.at(i) != ' ')
+		{
+			str.at(i) = toupper(str.at(i));
+		}
+		
+	}
+
+
+}
+
+string LowerCaseAllLetterInString(string str) {
+
+	bool isFirstLetter = true;
+
+
+
+	for (int i = 0; i < str.length(); i++)
+	{
+
+
+		if (str.at(i) != ' ')
+		{
+			str.at(i) = tolower(str.at(i));
+		}
+
+	}
+	return str;
+
+}
+
+void InvertCharCase(char &ch) {
+
+	isupper(ch) ? ch = tolower(ch) : ch = toupper(ch);
+
+}
+
+void InvertAllStringLettersCase(string &str) {
+
+	for (short i = 0; i < str.length(); i++)
+	{
+		 InvertCharCase(str[i]);
+	}
+
+
+
+}
+
+short CountUpperCaseInString(string str) {
+
+	short Count = 0;
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (isupper(str[i]))
+		{
+			Count++;
+		}
+
+	}
+	return Count;
+
+
+}
+
+short CountLowerCaseInString(string str) {
+
+	short Count = 0;
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (islower(str[i]))
+		{
+			Count++;
+		}
+
+	}
+	return Count;
+
+
+}
+
+short CountLetters(string str,enWhatToCount WhatToCount=enWhatToCount::All) {
+
+	if (WhatToCount == enWhatToCount::All)
+	{
+		return str.length();
+	}
+	short Count = 0;
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (WhatToCount==enWhatToCount::SmallLetters&&islower(str[i]))
+		{
+			Count++;
+		}
+		else if (WhatToCount == enWhatToCount::CapitalLetters && isupper(str[i]))
+		{
+			Count++;
+		}
+	}
+	return Count;
+
+
+}
+
+short LetterFreq(string str,char LetterToCount,bool MachCase=true) {//Mach Case Means Capital not equal to small
+
+	short Count = 0;
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (MachCase)
+		{
+			if (str[i] == LetterToCount)
+			{
+				Count++;
+			}
+		}
+		else
+		{
+			if (tolower(str[i]) == tolower(LetterToCount))
+			{
+				Count++;
+			}
+		}
+	}
+	return Count;
+
+
+
+
+}
+
+bool isVowel(char ch) {
+
+	ch=tolower(ch);
+	return(ch == 'a' || ch == 'o' || ch == 'e' || ch == 'i' || ch == 'u');
+
+
+}
+
+short CountVowelsInString(string str) {
+
+	short Count = 0;
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (isVowel(str[i]))
+		{
+			Count++;
+		}
+
+	}
+	return Count;
+
+
+}
+
+void PrintVowelsInString(string str) {
+
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (isVowel(str[i]))
+		{
+			cout<<str[i]<<"   ";
+		}
+
+	}
+	cout << endl;
+}
+
+void PrintEachWordInString(string str) {
+
+
+	string Delim = " ";
+	string sWord = "";
+	int pos = 0;
+
+	while ((pos = str.find(Delim)) != std::string::npos)//use find function to store space pos in pos variable //will not enter loop if not find space(delim)
+	{
+		sWord = str.substr(0, pos);
+		if (sWord != "")
+		{
+			cout << sWord << endl;
+		}
+		str.erase(0, pos + Delim.length());//will delete from start of string to pos+space
+	}
+	if (str != "")//will print the last word in string because there is not found delim after it
+	{
+		cout << str << endl;
+	}
+
+
+
+
+	//thats my solution
+	/*short i = 0;
+	while (i < str.length())
+	{
+
+
+		if (str[i] != ' ')
+		{
+			cout << str[i];
+			i++;
+		}
+		else
+		{
+			cout << endl;
+			i++;
+		}
+		
+	}*/
+
+	
+
+
+}
+
+short CountWordsInString(string str) {
+
+	int pos = 0;
+	string Dilem = " ";
+	string sWord = "";
+	int Count = 0;
+
+	while ((pos = str.find(Dilem)) != std::string::npos)
+	{
+
+		sWord = str.substr(0, pos);
+		if (sWord != "")
+		{
+			Count++;
+		}
+		str.erase(0, pos + Dilem.length());
+
+	}
+	if (str != "")
+	{
+		Count++;
+	}
+
+	return Count;
+}
+
+vector<string>SplitString(string str,string Dilem) {
+
+	vector<string>vString;
+	string sWord = "";
+	int pos = 0;
+	
+	while ((pos = str.find(Dilem)) != std::string::npos)//use find function to store space pos in pos variable //will not enter loop if not find space(delim)
+	{
+		sWord = str.substr(0, pos);
+		if (sWord != "")
+		{
+			vString.push_back(sWord) ;
+		}
+		str.erase(0, pos + Dilem.length());//will delete from start of string to pos+space
+	}
+	if (str != "")//will print the last word in string because there is not found delim after it
+	{
+		vString.push_back(str);
+	}
+	return vString;
+
+}
+
+void PrintSplitString(vector<string>vString) {
+
+	cout <<"Tokens = " << vString.size() << endl;
+
+	for (string& sWord : vString)
+	{
+		cout << sWord << endl;
+	}
+
+}
+
+string TrimLeft(string str) {
+
+	//My solution
+	/*int i = 0;
+	while (str[i+1] == ' ')
+	{
+		i++;
+	}
+	str.erase(0, i);
+	return str;*/
+
+	//Mohammed Abu_Hadhoud Solution:
+	for (int i = 0; i < str.length(); i++) 
+	{
+
+		if (str[i] != ' ')
+		{
+			return str.substr(i, str.length() - 1);
+		}
+	
+	}
+}
+
+string TrimRight(string str) {
+
+	//My solution
+	/*int i = str.length();
+	while (str[i - 1] == ' ')
+	{
+		i--;
+	}
+	str.erase(i, str.length() - 1);
+	return str;*/
+	//Mohammed Abu_Hadhoud Solusion:
+	for (int i = str.length(); i > 0; i--)
+	{
+
+		if (str[i-1] != ' ')
+		{
+			return str.substr(0, i);
+		}
+
+	}
+}
+
+string Trim(string str) {
+
+	return TrimLeft(TrimRight(str));
+
+}
+
+string JoinString(vector<string>vString,string Dilem) {
+
+	string str;
+	for (string& sWord : vString)
+	{
+		str += sWord + Dilem;
+	}
+	
+	return str.substr(0, str.length() - Dilem.length());
+}
+
+string JoinString(string arrString[],int arrLength, string Dilem) {
+
+	string str;
+	for (int i = 0; i < arrLength; i++)
+	{
+		str += arrString[i] + Dilem;
+	}
+
+	return str.substr(0, str.length() - Dilem.length());
+}
+
+string ReversWordsInString(string str)  {
+
+	vector<string>vRevers = SplitString(str, " ");
+
+	string vString;
+	vector<string> ::iterator iter = vRevers.end();
+
+	while (iter != vRevers.begin())
+	{
+		iter--;
+		vString += *iter + " ";
+	}
+	vString = vString.substr(0, vString.length() - 1);
+	return vString;
+}
+
+string ReplaceWordsInStringUsingBiuldInFunction(string str, string WordReplaced, string WordInserted) {
+
+	
+
+		short pos1 = 0;
+		while ((pos1 = str.find(WordReplaced)) != std::string::npos)
+		{
+
+			str = str.replace(pos1, WordReplaced.length(), WordInserted);
+			pos1 = str.find(WordReplaced);
+		}
+		return str;
+	}
+
+string ReplaceWordsInString(string str,string WordReplaced,string WordInserted,bool MachCase=true) {
+
+	
+	vector<string>vString = SplitString(str, " ");
+	for (string& s : vString)
+	{
+		if (MachCase)
+		{
+			if (s == WordReplaced)
+			{
+				s = WordInserted;
+			}
+		}
+		else
+		{
+			if (LowerCaseAllLetterInString(WordReplaced) == LowerCaseAllLetterInString(s))
+			{
+				s = WordInserted;
+			}
+		}
+	}
+	return JoinString(vString, " ");
+	
+
+}
+
+string RemoveAllPunctsInString(string str) {
+
+	string sPunct = "";
+	
+		for (int i = 0; i < str.length(); i++)
+		{
+			if (!ispunct(str[i]))
+			{
+				sPunct += str[i];
+			}
+		}
+
+	
+	return sPunct;
+	
+	
+}
+
+stClientData ReadClientData() {
+
+
+	stClientData ClientData;
+
+	cout << "\nPlease enter Your Data\n";
+
+	cout << "\nEnter Account Number? ";
+	//cin.ignore(1,'\n');
+	getline(cin>>ws, ClientData.AccountNumber);
+	cout << "\nEnter PIN Code? ";
+	//cin.ignore(1, '\n');
+	getline(cin, ClientData.PINCode);
+	cout << "\nEnter Name? ";
+	//cin.ignore(1, '\n');
+	getline(cin, ClientData.Name);
+	cout << "\nEnter Phone? ";
+	//cin.ignore(1, '\n');
+	getline(cin, ClientData.Phone);
+	cout << "\nEnter Account Balance? ";
+	//cin.ignore(1, '\n');
+	getline(cin, ClientData.AccountBalance);
+	return ClientData;
+}
+
+vector<string> FillClientDataInVector(stClientData Data) {
+
+	vector<string> vData;
+	vData.push_back(Data.AccountNumber);
+	vData.push_back(Data.PINCode);
+	vData.push_back(Data.Name);
+	vData.push_back(Data.Phone);
+	vData.push_back(Data.AccountBalance);
+
+	return vData;
+}
+
+string GetOneLineClientData(vector<string> vData) {
+
+	return JoinString(vData, "#//#");
+}
+
+void PrintOneLineClientData(string sData) {
+
+	cout << "\nClient Record For Saving is:\n";
+	cout << sData << endl;
+
+
+}
+
+string ConvarteRecordToLine(stClientData Data,string Sperator="#//#") {
+
+	string sData = "";
+	sData += Data.AccountNumber + Sperator;
+	sData += Data.PINCode + Sperator;
+	sData += Data.Name + Sperator;
+	sData += Data.Phone + Sperator;
+	sData += Data.AccountBalance;
+
+	return sData;
+
+}
+
+stClientData ConvarteLineDataToRecord(string sData, string Sperator = "#//#") {
+
+	stClientData Data;
+	vector<string>vData;
+	vData = SplitString(sData, Sperator);
+	
+	Data.AccountNumber = vData[0];
+	Data.PINCode = vData[1];
+	Data.Name = vData[2];
+	Data.Phone = vData[3];
+	Data.AccountBalance = vData[4];
+
+	return Data;
+}
+
+void PrintClientRecord(stClientData Data) {
+
+	cout << "\nThe Following Are Clients Detailes:\n";
+	cout << "\nAccount Number : " << Data.AccountNumber;
+	cout << "\nPIN Cod        : " << Data.PINCode;
+	cout << "\nName           : " << Data.Name;
+	cout << "\nPhone          : " << Data.Phone;
+	cout << "\nAccount Balance: " << Data.AccountBalance << endl;
+
+}
+
+void AddClientToFile(string FileName,string DataLine) {
+
+	fstream MyFile;
+	MyFile.open(FileName, ios::out | ios::app);
+
+	if (MyFile.is_open())
+	{
+		MyFile << DataLine << endl;
+	}
+	MyFile.close();
+
+
+}
+
+void AddNewClient() {
+
+	stClientData Data;
+	Data = ReadClientData();
+	AddClientToFile(FileName, ConvarteRecordToLine(Data));
+
+}
+
+void AddClients() {
+
+	char Ask = 'y';
+	stClientData Data;
+
+	fstream ClientFile;
+
+	do {
+		system("cls");
+		cout << "\nAdding New Client:\n";
+		AddNewClient();
+		cout << "\nAdding Client Finished Succesfully, Do You Want To Add New Client";
+		cin >> Ask;
+
+	} while (toupper(Ask) == 'Y');
+
+}
+
+vector<stClientData> LoadClientsDataFromFile(string FileName)
+{
+	fstream MyFile;
+	vector<stClientData>vClients;
+
+	MyFile.open(FileName, ios::in);//read Mode
+
+	if (MyFile.is_open())
+	{
+		string Line;
+		stClientData Data;
+
+		while (getline(MyFile, Line))
+		{
+			Data = ConvarteLineDataToRecord(Line);
+			vClients.push_back(Data);
+		}
+		MyFile.close();
+	}
+
+	return vClients;
+
+}
+
+void ShowClient(stClientData Client) {
+
+
+	cout << "| " << setw(15) << left << Client.AccountNumber;
+	cout << "| " << setw(10) << left << Client.PINCode;
+	cout << "| " << setw(40) << left << Client.Name;
+	cout << "| " << setw(12) << left << Client.Phone;
+	cout << "| " << setw(12) << left << Client.AccountBalance;
+
+}
+
+void ShowClientsList(vector<stClientData>vClients) {
+
+	cout << "\n\t\t\t\t\tShow (" << vClients.size() << ") Client(s)\n\n";
+
+
+	cout << "\n_______________________________________________________";  
+	cout << "_________________________________________\n" << endl;
+
+	cout << "| " << left << setw(15) << "Account Number";
+	cout << "| " << left << setw(10) << "PIN Code";
+	cout << "| " << left << setw(40) << "Name";
+	cout << "| " << left << setw(12) << "Phone";
+	cout << "| " << left << setw(12) << "Account Balance";
+
+	cout << "\n_______________________________________________________";
+	cout << "_________________________________________\n" << endl;
+
+
+
+	for (stClientData& Client:vClients)
+	{
+		ShowClient(Client);
+		cout << endl;
+	}
+	cout << "\n_______________________________________________________";
+	cout << "_________________________________________\n" << endl;
+
+}
+
+bool FindClientByAccountNumber(vector<stClientData>vClients, stClientData& Client, string AccountNumberOfClient) {
+
+
+
+	for (stClientData& fClient : vClients)
+	{
+		if (fClient.AccountNumber == AccountNumberOfClient)
+		{
+			Client= fClient;
+			return true;
+		}
+		
+
+	}
+	return false;
+	
+}
+
+void LoadClientsDataToFile(string FileName, vector<stClientData>vClients) {
+
+	fstream MyFile;
+	MyFile.open(FileName, ios::out);
+
+	if (MyFile.is_open())
+	{
+		
+		string str;
+		for (stClientData C : vClients)
+		{
+			if (C.Delete == false)
+			{
+				str = ConvarteRecordToLine(C);
+				MyFile << str << endl;
+			}
+		}
+	}
+
+	MyFile.close();
+
+
+
+}
+
+void MarkClientForDeletionByAccountNumber(vector<stClientData>&vClients, string AccountNumberOfClient) {
+
+	for (stClientData& C : vClients)
+	{
+		if (C.AccountNumber == AccountNumberOfClient)
+		{
+			C.Delete = true;
+		}
+	}
+
+
+
+
+}
+
+void DeleteClientByAccountNumber(vector<stClientData>&vClients, string AccountNumberOfClient) {
+
+	stClientData Client;
+	char Delete='N';
+
+	if (FindClientByAccountNumber(vClients, Client, AccountNumberOfClient))
+	{
+		PrintClientRecord(Client);
+		cout << "\nAre You Sure You Want To Delete This Client?? Y/N";
+		cin >> Delete;
+		if (toupper(Delete) == 'Y')
+		{
+			MarkClientForDeletionByAccountNumber(vClients, AccountNumberOfClient);
+			LoadClientsDataToFile(FileName, vClients);
+			vClients = LoadClientsDataFromFile(FileName);//To Refresh Data
+
+			cout << "\nDelete is Complete Succesfully.\n";
+
+		}
+		
+	}
+	else
+	{
+		cout << "\nClient With Account Number (" << AccountNumberOfClient << ") is Not Found\n";
+	}
+
+
+}
+
+stClientData UpdateClientData(string AccountNumber) {
+
+
+	stClientData ClientData;
+	ClientData.AccountNumber = AccountNumber;
+	cout << "\nEnter PIN Code? ";
+	//cin.ignore(1, '\n');
+	getline(cin >> ws, ClientData.PINCode);
+	cout << "\nEnter Name? ";
+	//cin.ignore(1, '\n');
+	getline(cin, ClientData.Name);
+	cout << "\nEnter Phone? ";
+	//cin.ignore(1, '\n');
+	getline(cin, ClientData.Phone);
+	cout << "\nEnter Account Balance? ";
+	//cin.ignore(1, '\n');
+	getline(cin, ClientData.AccountBalance);
+
+	return ClientData;
+
+}
+
+void UpdateClientByAccountNumber(vector<stClientData>& vClients, string AccountNumberOfClient) {
+
+	stClientData Client;
+	char Update = 'N';
+
+	if (FindClientByAccountNumber(vClients, Client, AccountNumberOfClient))
+	{
+		PrintClientRecord(Client);
+		cout << "\nAre You Sure You Want To Update This Client?? Y/N";
+		cin >> Update;
+		if (toupper(Update) == 'Y')
+		{
+			for (stClientData &C : vClients)
+			{
+				if (C.AccountNumber == AccountNumberOfClient)
+				{
+
+					C = UpdateClientData(AccountNumberOfClient);
+				}
+				
+			}
+			LoadClientsDataToFile(FileName, vClients);
+
+			cout << "\nUpdate is Complete Succesfully.\n";
+
+		}
+
+	}
+	else
+	{
+		cout << "\nClient With Account Number (" << AccountNumberOfClient << ") is Not Found\n";
+	}
+
+
+}
+
+
+int main()
+{
+
+	srand((unsigned)time(NULL));
+	//Problem1
+	int Matrix[3][3];
+	short Rows = 3, Coloms = 3;
+	FillRandomMatrix(Matrix, Rows, Coloms);
+	cout << "The following is a 3 by 3 Random Matrix\n";
+	PrintMatrix(Matrix, Rows, Coloms);
+
+	//Problem2
+	cout << "\nThe following is a sum of each row in the Matrix\n";
+	PrintRowSum(Matrix, Rows, Coloms);
+
+
+	//Problem3
+	int RowSumArr[3];
+	RowSumUsingArr(Matrix, RowSumArr, Rows, Coloms);
+
+	cout << "\nThe following is a sum of each row in the Matrix\n";
+
+	PrintEachRowSumUsingArr(RowSumArr, Rows);
+
+	//Problem4
+	cout << "\nThe following is a sum of each Colom in the Matrix\n";
+	PrintEachColomSum(Matrix, Rows, Coloms);
+
+	//Problem5
+	int ColSumArr[3];
+
+	cout << "\nThe following is a sum of each Colom in the Matrix\n";
+
+	ColSumUsingArr(Matrix, ColSumArr, Rows, Coloms);
+	PrintEachColSumUsingArr(ColSumArr, Coloms);
+
+	//Problem6
+	int OrderdMatrix[3][3];
+	FillMatrixWithOrderdNums(OrderdMatrix, Rows, Coloms);
+	cout << "\nThe following is a Elements Of Orderd Matrix\n";
+
+	PrintMatrix(OrderdMatrix, Rows, Coloms);
+
+	//Problem7
+	int MatrixTranspos[3][3];
+
+	TransposMatrix(OrderdMatrix, MatrixTranspos, Rows, Coloms);
+
+	cout << "\nThe following is a Elements Of Transposed Orderd Matrix\n";
+	PrintMatrix(MatrixTranspos, Rows, Coloms);
+
+	//Problem8
+	int Matrix1[3][3];
+	int Matrix2[3][3];
+	int ResultMatrix[3][3];
+
+	FillRandomMatrix(Matrix1, Rows, Coloms);
+	FillRandomMatrix(Matrix2, Rows, Coloms);
+
+	cout << "\nMatrix1:\n";
+	PrintMatrix(Matrix1, Rows, Coloms);
+
+	cout << "\nMatrix:\n";
+	PrintMatrix(Matrix2, Rows, Coloms);
+
+	MultiplyTwoMatrices(Matrix1, Matrix2, ResultMatrix, Rows, Coloms);
+
+	cout << "\nMultiplication Result:\n";
+
+	PrintMatrix(ResultMatrix, Rows, Coloms);
+
+	//Problem9
+	cout << "\nMiddle Row Of Matrix1 is:\n";
+	PrintMiddleRow(Matrix1, Rows, Coloms);
+
+	cout << "\nMiddle Colom Of Matrix1 is:\n";
+	PrintMiddleColom(Matrix1, Rows, Coloms);
+
+	//Problem10
+	cout << "\nMatrix1:\n";
+	PrintMatrix(Matrix1, Rows, Coloms);
+
+	int MatrixSum = SumMatrix(Matrix1, Rows, Coloms);
+	cout << "\nMatrix Sum:\n";
+	cout << MatrixSum << endl;
+
+	//Problem11
+	cout << "\nMatrix1:\n";
+	PrintMatrix(Matrix1, Rows, Coloms);
+
+	cout << "\nMatrix2:\n";
+	PrintMatrix(Matrix2, Rows, Coloms);
+
+
+	if (AreEqualMatrices(Matrix1, Matrix2, Rows, Coloms))//check if sum of matrix1 = sum of Matrix2 
+	{
+		cout << "\nYes, Matrices are equal.\n";
+	}
+	else
+	{
+		cout << "\nNo, Matrices are Not equal.\n";
+
+	}
+	//Problem12
+	if (AreTypicalMatrices(Matrix1, Matrix2, Rows, Coloms))//check if Elements of matrix1 = Elements of Matrix2
+	{
+		cout << "\nYes, Matrices are typical.\n";
+	}
+	else
+	{
+		cout << "\nNo, Matrices are Not typical.\n";
+
+	}
+
+	//Problem13
+	int MatrixIden[3][3] = {
+							 {1,0,0},
+							 {0,1,0},
+							 {0,0,1}
+	};
+	cout << "\nMatrix:\n";
+
+	PrintMatrix(MatrixIden, Rows, Coloms);
+
+
+	if (isIdentityMatrix(MatrixIden, Rows, Coloms))
+	{
+		cout << "\nYes, Matrix is Identity.\n";
+	}
+	else
+	{
+		cout << "\nNo, Matrix is Not Identity.\n";
+	}
+
+	//Problem14
+	int MatrixScalar[3][3] = {
+					 {9,0,0},
+					 {0,9,0},
+					 {0,0,9}
+	};
+
+	cout << "\nMatrix:\n";
+	PrintMatrix(MatrixScalar, Rows, Coloms);
+
+	if (isScalarMatrix(MatrixScalar, Rows, Coloms))
+	{
+		cout << "\nYes, Matrix is Scalar.\n";
+	}
+	else
+	{
+		cout << "\nNo, Matrix is Not Scalar.\n";
+	}
+
+	//Problem15
+	int MatrixFreq[3][3] = { {1,1,2} ,{9,9,2} ,{9,5,6} };
+
+	cout << "\nMatrix:\n";
+	PrintMatrix(MatrixFreq, Rows, Coloms);
+
+	int NumberToCount = 0;
+	cout << "\nPlease enter the Number to Count\n";
+	cin >> NumberToCount;
+
+	short TimeFreq = NumberFreqInMatrix(MatrixFreq, NumberToCount, Rows, Coloms);
+	PrintNumberFreqInMatrix(NumberToCount, TimeFreq);
+
+	//Problem16
+	int MatrixSparce[3][3] = { {1,2,2} ,{9,0,0} ,{0,0,6} };//Sparce matrix is number of zeros greater than else Numbers
+
+	cout << "\nMatrix:\n";
+	PrintMatrix(MatrixSparce, Rows, Coloms);
+
+	if (isSparceMatrix(MatrixSparce, Rows, Coloms))
+	{
+		cout << "\nYes, Matrix is Sparce.\n";
+	}
+	else
+	{
+		cout << "\nNo, Matrix is Not Sparce.\n";
+	}
+
+	//Problem17
+	//dont use NumberFreqInMatrix>0 because it is slower
+
+	int MatrixExists[3][3] = { {22,13,77} ,{77,10,5,} ,{12,44,55} };
+	int Number = 0;
+
+	cout << "\nMatrix:\n";
+	PrintMatrix(MatrixExists, Rows, Coloms);
+
+
+	cout << "\nEnter Number You Look for in Matrix??\n";
+	cin >> Number;
+
+	if (isNumExistsInMatrix(MatrixExists, Rows, Coloms, Number))
+	{
+		cout << "\nYes, Number is Exists in Matrix.\n";
+
+	}
+	else
+	{
+		cout << "\nNo, Number is Not Exists in Matrix.\n";
+	}
+
+	//Problem18
+	int Matrixx1[3][3] = { {1,5,3,}, {10,20,30,},{33,44,55} };
+	int Matrixx2[3][3] = { {1,5,4,}, {10,40,50,},{33,44,11} };
+
+	cout << "\nMatrix1:\n";
+	PrintMatrix(Matrixx1, Rows, Coloms);
+
+	cout << "\nMatrix2:\n";
+	PrintMatrix(Matrixx2, Rows, Coloms);
+
+
+	cout << "\nIntersected Numbers In Matrix1 & Matrix2 is:\n";
+	PrintIntersectedNumbersInTwoMatrices(Matrixx1, Matrixx2, Rows, Coloms);
+
+	//Problem19
+	cout << "\nMatrix1:\n";
+	PrintMatrix(Matrixx1, Rows, Coloms);
+
+	cout << "\nMinimum Number in Matrix is : " << MinNumberInMatrix(Matrixx1, Rows, Coloms) << endl;
+	cout << "\Maximum Number in Matrix is : " << MaxNumberInMatrix(Matrixx1, Rows, Coloms) << endl;
+
+	//Problem20
+	int MatrixPal[3][3] = { {1,2,1},
+							{5,5,5},
+							{4,3,4}
+	};
+
+	cout << "\nMatrix1:\n";
+	PrintMatrix(MatrixPal, Rows, Coloms);
+
+	if (isPalindromMatrix(MatrixPal, Rows, Coloms))
+	{
+		cout << "\nYes, Matrix is palindrom.\n";
+	}
+	else
+	{
+		cout << "\nNo, Matrix is Not palindrom.\n";
+	}
+	//Problem21
+	cout << "\nFibonaccy Series is:\n";
+	PrintFibonaccySeries(15);
+
+	//Problem22
+	cout << "\nFibonaccy Series is:\n";
+	PrintFibonaccySeriesUsingRecursion(15, 1, 0, 0);
+
+	//Problem23
+	string str = "";
+	str = ReadString();
+
+	/*cout << "\nFirst Letters in this string is: \n";
+	PrintFirstLetterOfEachWordInString(str);*/
+
+	//Problem24
+
+	//UpperCaseFirstLetterOfEachWordInString(str);
+	//cout << "\nYour String After Convarsion To Upper Case:\n";
+	//cout << str << endl;
+
+	////Problem25
+
+	//LowerCaseFirstLetterOfEachWordInString(str);
+	//cout << "\nYour String After Convarsion To Lower Case:\n";
+	//cout << str << endl;
+
+	//Problem26
+
+	//UpperCaseAllLetterInString(str);
+	//cout << "\nYour String After Convarsion All Letters To Upper Case:\n";
+	//cout << str << endl;
+
+	//LowerCaseAllLetterInString(str);
+	//cout << "\nYour String After Convarsion All Letters To Lower Case:\n";
+	//cout << str << endl;
+
+
+	//Problem27
+
+	/*char ch = Readchar();
+
+	InvertCharCase(ch);
+	cout << "\nChar After Inverting case :\n";
+	cout << ch << endl;
+
+	InvertCharCase(ch);
+	cout << "\nChar After Inverting case :\n";
+	cout << ch << endl;*/
+
+	//Problem28
+	/*cout << "\nYour String After Inverting is:\n";
+	InvertAllStringLettersCase(str);
+	cout << str << endl;*/
+
+	//Problem29
+
+	/*cout << "\nYour String Length is:\n";
+	cout << str.length() << endl;
+
+	cout << "\nCount Of Capital Letters is:\n";
+	cout << CountUpperCaseInString(str) << endl;
+
+	cout << "\nCount of Small Letters is:\n";
+	cout << CountLowerCaseInString(str) << endl;
+
+	cout << "\n\nMethod2\n\n";
+
+	cout << "\nYour String Length is:\n";
+	cout << CountLetters(str) << endl;
+
+	cout << "\nCount Of Capital Letters is:\n";
+	cout << CountLetters(str,enWhatToCount::CapitalLetters) << endl;
+
+	cout << "\nCount of Small Letters is:\n";
+	cout << CountLetters(str,enWhatToCount::SmallLetters) << endl;*/
+
+	//Problem30
+	//cout << "\nPlease enter Letter To Count\n";
+	char ch = Readchar();
+
+	//cout << "\nLetter " << "\'" << ch <<"\'" << " Frequency is:\n";
+	//cout << LetterFreq(str, ch) << endl;
+
+
+	////Problem31
+	//cout << "\nLetter " << "\'" << ch << "\'" << " Or \'";
+	//InvertCharCase(ch);
+	//cout<< (ch) << "\' Frequency is:\n";
+	//
+	//cout << LetterFreq(str, ch,false) << endl;
+
+	//Problem32
+	//if (isVowel(ch))
+	//{
+	//	cout << "Yes, \'" << (ch) << "\' is Vowel:\n";
+	//}
+	//else
+	//{
+	//	cout << "No, \'" << (ch) << "\' is Not Vowel:\n";
+	//}
+
+	////Problem33
+	//str = ReadString();
+	//cout << "\nNumber of Vowels is:\n";
+	//cout << CountVowelsInString(str) << endl;
+
+	////Problem34
+	//cout << "\nVowels are: ";
+	//PrintVowelsInString(str);
+
+	////Problem35
+	//PrintEachWordInString(str);
+
+	////Problem36
+	//cout << "\nNumber of Words In this string is:\n";
+	//cout << CountWordsInString(str) << endl;
+
+	////Problem37
+	//PrintSplitString(SplitString(str, " "));
+
+	////Problem38
+
+	//string str1 = "                     Alaa Khaled Hashem                ";
+	//cout <<"Trim Left=" << TrimLeft(str1) << endl;
+	//cout << "Trim Rigth=" << TrimRight(str1)<<" aaaa" << endl;
+	//cout << "Trim=" << Trim(str1) << " aaaa" << endl;
+
+	////Problem39+//Problem40
+
+	//string str2 = "Alaa,Khaled,Hashem";
+	//vector<string>vString = SplitString(str2, ",");//بقطع كلمات السترنج وبحطهم في فيكتور
+	//cout << "\nVector After join: " << JoinString(vString, ",") << endl;//بجمع كلمات الي في الفيكتور وبحطهم في سترينج مع الفصل بينهم بالاشارة الي بدي اياها
+
+	//string arrString[] = {"Alaa","Khaled","Hashem"};
+	//int arrLength= 3;
+
+	//cout << "\n\nArr After join: " << JoinString(arrString, arrLength, ",") << endl;;//بجمع كلمات الي في الفيكتور وبحطهم في سترينج مع الفصل بينهم بالاشارة الي بدي اياها
+
+	////Problem41
+	//string str3 = ReadString();
+
+	//cout << "Reversed String is:";
+	//cout <<ReversWordsInString(str3) << endl;
+
+	////Problem42+43
+
+	//string str4 = "Welcome!! to Jordan , jordan , is Good.";
+	//cout << str4 << endl;
+	//cout << "\nUsing replace build in function\n";
+	//cout << ReplaceWordsInStringUsingBiuldInFunction(str3, "Jordan", "Usa") << endl;
+
+	//cout << "\nWith Mach Case\n";
+	//cout << ReplaceWordsInString(str4, "Jordan", "Usa") << endl;
+
+	//cout << "\nWithout Mach Case\n";
+	//cout << ReplaceWordsInString(str4, "Jordan", "Usa",false) << endl;
+
+	////Problem44
+	//cout << "\nAfter Remove All Puncts:\n";
+	//cout << RemoveAllPunctsInString(str4) << endl;
+
+	//Problem45
+	//stClientData ClientData = ReadClientData();
+	//
+	////string sData = GetOneLineClientData(FillClientDataInVector(ClientData));
+	////PrintOneLineClientData(sData);
+	//cout << "\nClient Record For Saving is:\n";
+	//cout << ConvarteRecordToLine(ClientData) << endl;
+
+	////Problem46
+	//string stLine = "A150#//#1234#//#Alaa Khaled Hahsem Mahmoud#//#0787044649#//#5000";
+	//PrintClientRecord(ConvarteLineDataToRecord(stLine));
+
+	////Problem47
+	//AddClients();
+
+	////Problem48
+	vector<stClientData>vClients = LoadClientsDataFromFile(FileName);
+	//ShowClientsList(vClients);
+
+	////Problem49
+	//stClientData Client;
+	string AccountNumberOfClient = ReadString();
+	/*if (FindClientByAccountNumber(vClients ,Client, AccountNumberOfClient))
+	{
+		PrintClientRecord(Client);
+	}
+	else
+	{
+		cout << "\nClient With Account Number (" << AccountNumberOfClient << ") is Not Found\n";
+	}*/
+
+	////Problem50
+
+	//DeleteClientByAccountNumber(vClients, AccountNumberOfClient);
+
+    ////Problem51
+	UpdateClientByAccountNumber(vClients, AccountNumberOfClient);
+
+}
